@@ -449,7 +449,7 @@ export default function IndonesiaMap({ currentFrame }: { currentFrame: number })
         {isMapVisible && (
           <motion.section
             key="indonesia-map"
-            className="fixed inset-0 flex items-center justify-center p-6 md:p-12"
+            className="fixed inset-0 flex flex-col"
             style={{ 
               zIndex: 20, 
               background: "rgba(5, 10, 20, 0.60)",
@@ -461,23 +461,44 @@ export default function IndonesiaMap({ currentFrame }: { currentFrame: number })
             transition={{ duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94] }}
             aria-label="Indonesia Distribution Network — PT Indofresh"
           >
+            {/* Header */}
+            <motion.div
+              className="flex-shrink-0 pt-16 md:pt-20 px-8 md:px-14 pb-3 pointer-events-none"
+              initial={{ opacity: 0, y: 18 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.55, delay: 0.25 }}
+            >
+              <p className="text-[10px] font-bold tracking-[0.28em] uppercase mb-3" style={{ color: "rgba(255,255,255,0.35)" }}>
+                Distribution Network
+              </p>
+              <h2
+                className="font-extrabold leading-[1.0] tracking-[-0.03em] text-white"
+                style={{ fontSize: "clamp(2.2rem, 4vw, 3.4rem)", textShadow: "0 4px 24px rgba(0,0,0,0.6)" }}
+              >
+                Freshness From{" "}
+                <span style={{ color: "rgba(255,255,255,0.45)" }}>Across Indonesia.</span>
+              </h2>
+              <p className="mt-2 font-semibold text-white/30" style={{ fontSize: "clamp(0.75rem, 1.1vw, 0.9rem)" }}>
+                8 strategic branch locations · One seamless cold chain · Nationwide delivery, daily
+              </p>
+            </motion.div>
+
             {/* Interactive Map Container */}
             <motion.div
-              className="relative w-full flex items-center justify-center min-h-0"
-              initial={{ opacity: 0, scale: 0.96 }}
+              className="flex-1 flex items-center justify-center px-6 md:px-10 pb-3 min-h-0"
+              initial={{ opacity: 0, scale: 0.97 }}
               animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.65, delay: 0.2 }}
+              transition={{ duration: 0.65, delay: 0.3 }}
             >
               <div
                 ref={mapRef}
                 className="relative w-full overflow-hidden rounded-2xl"
                 style={{
-                  maxWidth: "min(92vw, 1150px, (100vh - 120px) * 16 / 9)",
+                  maxWidth: "min(100%, calc((100vh - 180px) * 16 / 9))",
                   aspectRatio: "16 / 9",
                   background: "rgba(255,255,255,0.02)",
                   border: "1px solid rgba(255,255,255,0.08)",
-                  boxShadow: "0 20px 60px rgba(0,0,0,0.4), inset 0 0 0 1px rgba(255,255,255,0.05)",
-                  backdropFilter: "blur(8px)",
+                  boxShadow: "0 24px 80px rgba(0,0,0,0.6)",
                   pointerEvents: "auto",
                 }}
               >
