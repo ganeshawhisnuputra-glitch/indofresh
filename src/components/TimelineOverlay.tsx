@@ -701,8 +701,7 @@ export default function TimelineOverlay({ isVisible }: TimelineOverlayProps) {
       >
         {/* ── Wordmark ────────────────────────────────────────────────────── */}
         <div
-          className="absolute top-0 left-0 right-0 flex items-center px-8 pt-8 md:px-12 md:pt-10"
-          style={{ pointerEvents: isVisible ? "auto" : "none" }}
+          className="absolute top-0 left-0 right-0 flex items-center px-8 pt-8 md:px-12 md:pt-10 pointer-events-none"
         >
           <div className="flex flex-col gap-0.5">
             <span className="text-[0.55rem] font-light tracking-[0.26em] text-white/30 uppercase">
