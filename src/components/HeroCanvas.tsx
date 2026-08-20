@@ -163,9 +163,9 @@ export default function HeroCanvas({
       }
     }
 
-    // Universal Memory Eviction (Desktop & Mobile): Free ImageBitmaps >45 frames away from current scroll position
-    // Keeps active RAM usage under 35 MB on Desktop and under 15 MB on Mobile forever
-    const EVICTION_WINDOW = 45;
+    // Universal Memory Eviction (Desktop & Mobile): Free ImageBitmaps >20 frames away from current scroll position
+    // Keeps active decoded frames limited to ~15-20 frames in RAM at all times (<15 MB RAM)
+    const EVICTION_WINDOW = 20;
     for (let i = 0; i < TOTAL_FRAMES; i++) {
       if (Math.abs(i - targetFrame) > EVICTION_WINDOW && framesRef.current[i] !== null) {
         try {
@@ -189,7 +189,7 @@ export default function HeroCanvas({
     await loadFrame(0);
     isDirtyRef.current = true;
 
-    // 2. Initial batch (frames 1..25) for instant presentation
+    // 2. Initial batch (frames 1..25) for instant presentation gate
     const INITIAL_BATCH = 25;
     for (let i = 1; i <= INITIAL_BATCH; i += 5) {
       const chunk = Array.from(
@@ -199,14 +199,7 @@ export default function HeroCanvas({
       await Promise.all(chunk.map(loadFrame));
     }
 
-    // 3. Remaining frames — background stream in 5-frame chunks with yields
-    for (let start = INITIAL_BATCH + 1; start < TOTAL_FRAMES; start += 5) {
-      const end = Math.min(start + 5, TOTAL_FRAMES);
-      const chunk = Array.from({ length: end - start }, (_, i) => start + i);
-      await Promise.all(chunk.map(loadFrame));
-      await new Promise<void>((r) => setTimeout(r, 16));
-    }
-
+    // Hand off remaining frame loading to on-demand viewport scrolling
     onAllFramesReady?.();
   }, [loadFrame, onAllFramesReady]);
 
