@@ -21,7 +21,7 @@
 //  Scene 11: 240–290  (content 240–265, gap 266–290)
 //  Scene 12: 291–296
 //
-// Total: 297 frames (indices 0–296) ✓
+// Total: 293 frames (indices 0–292) ✓
 //
 // Rules:
 //  • One frame → one scene. No overlapping ranges.
@@ -100,47 +100,47 @@ export const SCENES: Scene[] = [
     id: 1,
     label: 'Welcome',
     startFrame: 0,
-    endFrame: 49,
+    endFrame: 45,
     title: 'Welcome to Indofresh',
     subtitle: 'The Fresh Fruit People',
-    layout: { horizontal: 'center', vertical: 'middle', maxWidth: 'min(92vw, 900px)' },
+    layout: { horizontal: 'center', vertical: 'top', maxWidth: 'min(90vw, 800px)' },
     glass: { enabled: false },
   },
 
   // ── Scene 02 — Warehouse Entrance ─────────────────────────────────────────
-  // Content: 050–075.  Gap: 076–084 → continue Scene 02.
+  // Content: 046–071.  Gap: 072–080 → continue Scene 02.
   {
     id: 2,
     label: 'About Us',
-    startFrame: 50,
-    endFrame: 84,
+    startFrame: 46,
+    endFrame: 80,
     eyebrow: 'ABOUT US',
     body: "Since 2002, PT Indofresh has grown from a small trading company into Indonesia's leading fresh fruit importer and distributor. With over two decades of experience, we deliver more than 40 premium fruit varieties nationwide through world-class sourcing, strict quality control, and an efficient distribution network.",
     body2: 'Today, PT Indofresh proudly serves more than 2,000 business partners across Indonesia, earning the trust of retailers, wholesalers, and consumers alike.',
-    layout: { horizontal: 'left', vertical: 'middle', maxWidth: 'min(92vw, 820px)' },
-    glass: { enabled: true, blur: '20px', opacity: 0.08 },
+    layout: { horizontal: 'left', vertical: 'middle', maxWidth: 'min(90vw, 480px)' },
+    glass: { enabled: true, blur: '24px', opacity: 0.12 },
   },
 
   // ── Scene 03 — Fruit Grading Integration ──────────────────────────────────
-  // Content: 085–100.  Gap: 101–114 → continue Scene 03.
+  // Content: 081–096.  Gap: 097–110 → continue Scene 03.
   {
     id: 3,
     label: 'Grading',
-    startFrame: 85,
-    endFrame: 114,
+    startFrame: 81,
+    endFrame: 110,
     eyebrow: 'FRUIT GRADING INTEGRATION',
     body: 'Advanced grading technology ensures every fruit meets our highest standards of quality, consistency, and freshness before reaching our customers.',
-    layout: { horizontal: 'right', vertical: 'middle', maxWidth: 'min(88vw, 760px)' },
-    glass: { enabled: true, blur: '20px', opacity: 0.08 },
+    layout: { horizontal: 'right', vertical: 'middle', maxWidth: 'min(90vw, 440px)' },
+    glass: { enabled: true, blur: '24px', opacity: 0.12 },
   },
 
   // ── Scene 04 — Cold Storage Operations ────────────────────────────────────
-  // Content: 115–125.  Gap: 126–154 → continue Scene 04.
+  // Content: 111–121.  Gap: 122–150 → continue Scene 04.
   {
     id: 4,
     label: 'Operations',
-    startFrame: 115,
-    endFrame: 154,
+    startFrame: 111,
+    endFrame: 150,
     eyebrow: 'OPERATIONS AND FRESHNESS',
     bulletItems: [
       {
@@ -160,20 +160,20 @@ export const SCENES: Scene[] = [
         body: 'More than 20 years of industry expertise delivering consistent quality and trusted service.',
       },
     ],
-    layout: { horizontal: 'left', vertical: 'middle', maxWidth: 'min(90vw, 840px)' },
-    glass: { enabled: true, blur: '24px', opacity: 0.10 },
+    layout: { horizontal: 'left', vertical: 'middle', maxWidth: 'min(90vw, 480px)' },
+    glass: { enabled: true, blur: '24px', opacity: 0.12 },
   },
 
   // ── Scene 05 — Trusted Brands ─────────────────────────────────────────────
-  // Content: 155–161.  Gap: 162–171 → continue Scene 05.
+  // Content: 151–157.  Gap: 158–167 → continue Scene 05.
   {
     id: 5,
     label: 'Brands',
-    startFrame: 155,
-    endFrame: 171,
+    startFrame: 151,
+    endFrame: 167,
     title: 'OUR TRUSTED BRANDS',
     body: 'A portfolio of premium fruit brands trusted by businesses and consumers across Indonesia.',
-    layout: { horizontal: 'center', vertical: 'bottom', maxWidth: 'min(92vw, 860px)' },
+    layout: { horizontal: 'center', vertical: 'bottom', maxWidth: 'min(90vw, 480px)' },
     glass: { enabled: false },
   },
 
@@ -181,93 +181,88 @@ export const SCENES: Scene[] = [
   {
     id: 6,
     label: 'Global',
-    startFrame: 172,
-    endFrame: 207,
+    startFrame: 168,
+    endFrame: 203,
     eyebrow: 'GLOBAL SOURCING',
     title: 'Freshness From\nEvery Corner.',
     body: "Indofresh sources premium fresh fruit from the world's finest growing regions — across 6 continents and 12+ countries — delivering exceptional quality to Indonesia and beyond.",
-    layout: { horizontal: 'left', vertical: 'middle', maxWidth: 'min(90vw, 840px)' },
-    glass: { enabled: true, blur: '20px', opacity: 0.08 },
+    layout: { horizontal: 'left', vertical: 'middle', maxWidth: 'min(90vw, 520px)' },
+    glass: { enabled: true, blur: '24px', opacity: 0.12 },
   },
 
   // ── Scene 07 — China ──────────────────────────────────────────────────────
-  // Content: 208–213.  Gap: 214 → continue Scene 07.
+  // Content: 204–209.  Gap: 210 → continue Scene 07.
   {
     id: 7,
     label: 'China',
-    startFrame: 208,
-    endFrame: 214,
+    startFrame: 204,
+    endFrame: 210,
     eyebrow: "PEOPLE'S REPUBLIC OF CHINA",
-    title: 'China',
-    tagline: 'Legacy of Agricultural Innovation',
-    body: "Premium apples, pears, mandarins, and tropical produce sourced directly from China's most productive growing regions.",
-    products: ['Fuji Apples', 'Wangshan Apples', 'Honey Pears', 'Mandarin Oranges', 'Dragon Fruit'],
-    layout: { horizontal: 'center', vertical: 'middle', maxWidth: 'min(88vw, 800px)' },
-    glass: { enabled: true, blur: '20px', opacity: 0.08 },
+    title: 'Legacy of Agricultural Innovation',
+    body: "Premium Wangshan apples, pears, and oranges sourced directly from China's most productive growing regions.",
+    products: ['Wangshan Apple', 'Orange', 'Wangshan Pear'],
+    layout: { horizontal: 'center', vertical: 'bottom', maxWidth: 'min(90vw, 460px)' },
+    glass: { enabled: true, blur: '24px', opacity: 0.12 },
   },
 
   // ── Scene 08 — Malaysia ───────────────────────────────────────────────────
-  // Content: 215–220.  Gap: 221–226 → continue Scene 08.
+  // Content: 211–216.  Gap: 217–222 → continue Scene 08.
   {
     id: 8,
     label: 'Malaysia',
-    startFrame: 215,
-    endFrame: 226,
+    startFrame: 211,
+    endFrame: 222,
     eyebrow: 'MALAYSIA',
-    title: 'Malaysia',
-    tagline: 'The Heart of Tropical Richness',
-    body: "Southeast Asia's finest tropical produce — premium durian, rambutans, and dragon fruit — sourced from trusted Malaysian growers.",
-    products: ['Premium Durian', 'Rambutan', 'Dragon Fruit', 'Mangosteen', 'Starfruit'],
-    layout: { horizontal: 'center', vertical: 'middle', maxWidth: 'min(88vw, 800px)' },
-    glass: { enabled: true, blur: '20px', opacity: 0.08 },
+    title: 'The Heart of Tropical Richness',
+    body: "Southeast Asia's finest tropical produce — premium durian — sourced from trusted Malaysian growers.",
+    products: ['Durian'],
+    layout: { horizontal: 'center', vertical: 'bottom', maxWidth: 'min(90vw, 460px)' },
+    glass: { enabled: true, blur: '24px', opacity: 0.12 },
   },
 
   // ── Scene 09 — Thailand ───────────────────────────────────────────────────
-  // HOLD SECTION. Content: 227–228.  Gap: 229–234 → continue Scene 09.
+  // HOLD SECTION. Content: 223–224.  Gap: 225–230 → continue Scene 09.
   {
     id: 9,
     label: 'Thailand',
-    startFrame: 227,
-    endFrame: 234,
+    startFrame: 223,
+    endFrame: 230,
     eyebrow: 'KINGDOM OF THAILAND',
-    title: 'Thailand',
-    tagline: 'Where Orchards Meet Tradition',
-    body: "World-renowned Thai tropical fruits — mangoes, longan, and pomelo — delivered fresh from Thailand's most celebrated orchards.",
-    products: ['Thai Mango', 'Longan', 'Pomelo', 'Guava', 'Rose Apple'],
-    layout: { horizontal: 'center', vertical: 'middle', maxWidth: 'min(88vw, 800px)' },
-    glass: { enabled: true, blur: '20px', opacity: 0.08 },
+    title: 'Where Orchards Meet Tradition',
+    body: "World-renowned Thai tropical fruits — premium longan — delivered fresh from Thailand's most celebrated orchards.",
+    products: ['Longan'],
+    layout: { horizontal: 'center', vertical: 'bottom', maxWidth: 'min(90vw, 460px)' },
+    glass: { enabled: true, blur: '24px', opacity: 0.12 },
   },
 
   // ── Scene 10 — New Zealand ────────────────────────────────────────────────
-  // HOLD SECTION. Content: 235–236.  Gap: 237–239 → continue Scene 10.
+  // HOLD SECTION. Content: 231–232.  Gap: 233–235 → continue Scene 10.
   {
     id: 10,
     label: 'New Zealand',
-    startFrame: 235,
-    endFrame: 239,
+    startFrame: 231,
+    endFrame: 235,
     eyebrow: 'NEW ZEALAND',
-    title: 'New Zealand',
-    tagline: 'Southern Hemisphere Excellence',
-    body: "Premium New Zealand produce — world-class apples, kiwifruit, and stone fruit — sourced from pristine southern hemisphere growing regions.",
-    products: ['Kiwifruit', 'Royal Gala Apples', 'Jazz Apples', 'Nectarines', 'Plums'],
-    layout: { horizontal: 'center', vertical: 'middle', maxWidth: 'min(88vw, 800px)' },
-    glass: { enabled: true, blur: '20px', opacity: 0.08 },
+    title: 'Southern Hemisphere Excellence',
+    body: "Premium New Zealand produce — world-class apples, kiwifruit, and pears — sourced from pristine southern hemisphere growing regions.",
+    products: ['Granny Smith Apple', 'Kiwi', 'Pear'],
+    layout: { horizontal: 'center', vertical: 'bottom', maxWidth: 'min(90vw, 460px)' },
+    glass: { enabled: true, blur: '24px', opacity: 0.12 },
   },
 
   // ── Scene 11 — United States ──────────────────────────────────────────────
-  // Content: 240–265.  Gap: 266–290 → continue Scene 11.
+  // Content: 236–261.  Gap: 262–286 → continue Scene 11.
   {
     id: 11,
     label: 'United States',
-    startFrame: 240,
-    endFrame: 290,
+    startFrame: 236,
+    endFrame: 286,
     eyebrow: 'UNITED STATES OF AMERICA',
-    title: 'United States',
-    tagline: 'Powered by American Precision',
-    body: "California cherries, Washington grapes, and Florida citrus — premium American produce delivered from the world's most advanced agricultural industry.",
-    products: ['Washington Cherries', 'Navel Oranges', 'Red Globe Grapes', 'California Kiwi', 'Fuji Blueberries'],
-    layout: { horizontal: 'center', vertical: 'middle', maxWidth: 'min(88vw, 800px)' },
-    glass: { enabled: true, blur: '20px', opacity: 0.08 },
+    title: 'Powered by American Precision',
+    body: "California grapes and premium American produce delivered from the world's most advanced agricultural industry.",
+    products: ['Cotton Candy Grape', 'Muscat Grape'],
+    layout: { horizontal: 'center', vertical: 'bottom', maxWidth: 'min(90vw, 460px)' },
+    glass: { enabled: true, blur: '24px', opacity: 0.12 },
   },
 
   // ── Scene 12 — Indonesia Distribution Network ─────────────────────────────
@@ -276,8 +271,8 @@ export const SCENES: Scene[] = [
   {
     id: 12,
     label: 'Indonesia',
-    startFrame: 291,
-    endFrame: 296,
+    startFrame: 287,
+    endFrame: 292,
     eyebrow: 'DISTRIBUTION NETWORK',
     title: 'Freshness From\nAcross Indonesia.',
     subtitle: '8 strategic branch locations. One seamless cold chain. Nationwide freshness delivered every day.',
@@ -299,7 +294,7 @@ export function getActiveScene(frame: number): Scene {
       return scene;
     }
   }
-  // Fallback: last scene (should never happen with valid frame [0, 296])
+  // Fallback: last scene (should never happen with valid frame [0, 292])
   return SCENES[SCENES.length - 1];
 }
 
@@ -321,7 +316,7 @@ export function getActiveSceneIndex(frame: number): number {
 export const INDONESIA_SCENE_ID = 12;
 
 /** First frame at which the Indonesia map overlay should become visible */
-export const INDONESIA_START_FRAME = 291;
+export const INDONESIA_START_FRAME = 287;
 
 /** First frame at which map markers become interactive */
-export const INDONESIA_MARKERS_FRAME = 294;
+export const INDONESIA_MARKERS_FRAME = 290;

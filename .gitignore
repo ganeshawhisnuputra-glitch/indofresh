@@ -34,3 +34,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# temp upscale & test folders
+/public/frames_4k_temp
+/public/frames_original_backup
+/public/test_input
+/public/test_output

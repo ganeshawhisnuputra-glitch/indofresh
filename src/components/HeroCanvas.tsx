@@ -19,13 +19,14 @@ interface HeroCanvasProps {
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 
-const TOTAL_FRAMES = 297;
+const TOTAL_FRAMES = 293;
 const BASE_PATH = "frames";
 const BATCH_SIZE = 20;
 
 function getFrameUrl(index: number): string {
   const padded = String(index).padStart(3, "0");
-  return `/${BASE_PATH}/frame_${padded}_delay-0.066s.webp`;
+  const ext = index <= 45 ? "png" : "webp";
+  return `/${BASE_PATH}/frame_${padded}.${ext}`;
 }
 
 function clamp(v: number, lo: number, hi: number): number {
@@ -38,7 +39,7 @@ function clamp(v: number, lo: number, hi: number): number {
  * HeroCanvas — V2 Architecture
  *
  * RESPONSIBILITIES (strictly limited):
- *  1. Load the 297-frame ImageBitmap pool with priority ordering.
+ *  1. Load the 293-frame ImageBitmap pool with priority ordering.
  *  2. Subscribe to the `indofresh:frame` custom event (dispatched by the
  *     scroll engine in page.tsx) and render the requested frame.
  *  3. Paint only when the frame changes (dirty-flag RAF loop).
@@ -85,6 +86,11 @@ export default function HeroCanvas({
     if (canvas.width !== w * dpr || canvas.height !== h * dpr) {
       canvas.width = w * dpr;
       canvas.height = h * dpr;
+      const ctx = canvas.getContext("2d");
+      if (ctx) {
+        ctx.imageSmoothingEnabled = true;
+        ctx.imageSmoothingQuality = "high";
+      }
       isDirtyRef.current = true;
     }
   }, []);
@@ -97,6 +103,9 @@ export default function HeroCanvas({
     if (!ctx) return;
     const bitmap = framesRef.current[frameIndex];
     if (!bitmap) return;
+
+    ctx.imageSmoothingEnabled = true;
+    ctx.imageSmoothingQuality = "high";
 
     const cw = canvas.width;
     const ch = canvas.height;
@@ -138,6 +147,7 @@ export default function HeroCanvas({
         const bitmap = await createImageBitmap(blob, {
           premultiplyAlpha: "none",
           colorSpaceConversion: "none",
+          resizeQuality: "high",
         });
         framesRef.current[index] = bitmap;
         loadedCountRef.current++;

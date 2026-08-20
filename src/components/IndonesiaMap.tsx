@@ -13,6 +13,7 @@ import {
   INDONESIA_START_FRAME,
   INDONESIA_MARKERS_FRAME,
 } from "@/engine/timelineData";
+import { useEditor } from "@/editor/EditorContext";
 
 // ─── Official marker appearance order (Fix 04) ────────────────────────────────
 // 1. Jakarta (Ancol)  id:1
@@ -66,25 +67,25 @@ function CardBody({
       {/* Header */}
       <div
         className="flex items-center gap-3 px-5 pt-5 pb-4"
-        style={{ borderBottom: "1px solid rgba(255,255,255,0.06)" }}
+        style={{ borderBottom: "1px solid rgba(0,0,0,0.08)" }}
       >
         <div
           className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0"
-          style={{ background: "rgba(239,68,68,0.15)", border: "1px solid rgba(239,68,68,0.25)" }}
+          style={{ background: "rgba(223,32,40,0.1)", border: "1px solid rgba(223,32,40,0.2)" }}
         >
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="rgba(239,68,68,0.85)">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="#DF2028">
             <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
           </svg>
         </div>
         <div className="flex-1 min-w-0">
-          <p className="text-[9px] font-semibold tracking-[0.22em] text-white/40 uppercase mb-0.5">{branch.province}</p>
-          <p className="text-[15px] font-bold text-white leading-tight truncate">{branch.city}</p>
+          <p className="text-[9px] font-bold tracking-[0.22em] text-gray-400 uppercase mb-0.5">{branch.province}</p>
+          <p className="text-[15px] font-bold text-gray-900 leading-tight truncate">{branch.city}</p>
         </div>
       </div>
 
       {/* Body */}
       <div className="flex flex-col gap-4 px-5 py-4">
-        <p className="text-[11px] font-medium tracking-[0.04em] text-white/45 leading-snug">{branch.name}</p>
+        <p className="text-[11px] font-semibold tracking-[0.04em] text-gray-600 leading-snug">{branch.name}</p>
 
         {/* WhatsApp phone link */}
         <a
@@ -94,21 +95,21 @@ function CardBody({
           className="group flex items-center gap-2.5"
           aria-label={`Chat ${branch.city} Branch on WhatsApp — ${phone}`}
         >
-          <span className="text-[#25D366] transition-transform duration-200 group-hover:scale-110">
+          <span className="text-[#04B621] transition-transform duration-200 group-hover:scale-110">
             <WaIcon size={14} />
           </span>
           <span
-            className="text-[13px] font-semibold text-white/55 group-hover:text-[#25D366] transition-colors duration-200 relative"
+            className="text-[13px] font-bold text-gray-600 group-hover:text-[#04B621] transition-colors duration-200 relative"
             style={{ fontVariantNumeric: "tabular-nums" }}
           >
             {phone}
-            <span className="absolute -bottom-px left-0 right-0 h-px bg-[#25D366] scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-300" />
+            <span className="absolute -bottom-px left-0 right-0 h-px bg-[#04B621] scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-300" />
           </span>
         </a>
 
         {/* Address */}
-        <address className="not-italic text-[11px] font-normal text-white/35 leading-relaxed flex gap-2">
-          <svg className="flex-shrink-0 mt-[3px] text-white/20" width="10" height="10" viewBox="0 0 24 24" fill="currentColor">
+        <address className="not-italic text-[11px] font-medium text-gray-500 leading-relaxed flex gap-2">
+          <svg className="flex-shrink-0 mt-[3px] text-gray-400" width="10" height="10" viewBox="0 0 24 24" fill="currentColor">
             <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
           </svg>
           <span>
@@ -118,33 +119,33 @@ function CardBody({
           </span>
         </address>
 
-        <div className="h-px" style={{ background: "rgba(255,255,255,0.06)" }} />
+        <div className="h-px" style={{ background: "rgba(0,0,0,0.08)" }} />
 
         {/* CTAs */}
-        <div className="flex gap-2">
+        <div className="flex gap-2.5">
           <a
             href={waUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-xl text-[10px] font-bold tracking-[0.08em] text-white uppercase transition-all duration-250"
-            style={{ background: "rgba(37,211,102,0.14)", border: "1px solid rgba(37,211,102,0.25)" }}
+            className="flex-1 flex items-center justify-center gap-2 py-3 min-h-[44px] rounded-xl text-[11px] font-bold tracking-[0.08em] text-white uppercase transition-all duration-250"
+            style={{ background: "#04B621", border: "1px solid #04B621" }}
             aria-label={`Chat ${branch.city} Branch on WhatsApp`}
-            onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.background = "rgba(37,211,102,0.25)"; }}
-            onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.background = "rgba(37,211,102,0.14)"; }}
+            onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.background = "#03961b"; }}
+            onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.background = "#04B621"; }}
           >
-            <WaIcon size={11} />
+            <WaIcon size={13} />
             WhatsApp
           </a>
           <a
             href={mapsUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-xl text-[10px] font-bold tracking-[0.08em] text-white/50 uppercase transition-all duration-250"
-            style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.10)" }}
-            onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.background = "rgba(255,255,255,0.10)"; (e.currentTarget as HTMLElement).style.color = "rgba(255,255,255,0.9)"; }}
-            onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.background = "rgba(255,255,255,0.05)"; (e.currentTarget as HTMLElement).style.color = "rgba(255,255,255,0.5)"; }}
+            className="flex-1 flex items-center justify-center gap-2 py-3 min-h-[44px] rounded-xl text-[11px] font-bold tracking-[0.08em] text-gray-600 uppercase transition-all duration-250"
+            style={{ background: "rgba(0,0,0,0.04)", border: "1px solid rgba(0,0,0,0.08)" }}
+            onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.background = "rgba(0,0,0,0.08)"; (e.currentTarget as HTMLElement).style.color = "#111827"; }}
+            onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.background = "rgba(0,0,0,0.04)"; (e.currentTarget as HTMLElement).style.color = "#4B5563"; }}
           >
-            <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
               <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
             </svg>
             Maps
@@ -152,17 +153,17 @@ function CardBody({
         </div>
       </div>
 
-      {/* Close */}
+      {/* Close Button — 44px min touch target */}
       <button
         onClick={onClose}
-        className="absolute top-3.5 right-3.5 w-7 h-7 rounded-full flex items-center justify-center transition-colors duration-200"
-        style={{ background: "rgba(255,255,255,0.07)" }}
-        onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.background = "rgba(255,255,255,0.14)"; }}
-        onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.background = "rgba(255,255,255,0.07)"; }}
+        className="absolute top-3 right-3 w-10 h-10 min-h-[44px] min-w-[44px] rounded-full flex items-center justify-center transition-colors duration-200 cursor-pointer"
+        style={{ background: "rgba(0,0,0,0.06)" }}
+        onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.background = "rgba(0,0,0,0.12)"; }}
+        onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.background = "rgba(0,0,0,0.06)"; }}
         aria-label="Close branch card"
       >
-        <svg width="9" height="9" viewBox="0 0 9 9" fill="none">
-          <path d="M1 1l7 7M8 1L1 8" stroke="white" strokeWidth="1.5" strokeLinecap="round" />
+        <svg width="11" height="11" viewBox="0 0 9 9" fill="none">
+          <path d="M1 1l7 7M8 1L1 8" stroke="#111827" strokeWidth="1.6" strokeLinecap="round" />
         </svg>
       </button>
     </div>
@@ -193,11 +194,11 @@ const BranchCard = memo(function BranchCard({
   const phone   = formatPhoneDisplay(branch.waNumber);
 
   const glassStyle = {
-    background: "rgba(8,12,20,0.94)",
-    border: "1px solid rgba(255,255,255,0.10)",
+    background: "rgba(255,255,255,0.92)",
+    border: "1px solid rgba(0,0,0,0.1)",
     backdropFilter: "blur(40px)",
     WebkitBackdropFilter: "blur(40px)",
-    boxShadow: "0 32px 80px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,255,255,0.04)",
+    boxShadow: "0 32px 80px rgba(0,0,0,0.15), 0 0 0 1px rgba(0,0,0,0.05)",
   };
 
   // Card entrance per Doc 06: opacity 0→1, scale 0.95→1, y 20→0, 400ms
@@ -251,7 +252,7 @@ const BranchCard = memo(function BranchCard({
             transition={{ duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
           >
             <div className="flex justify-center pt-3 pb-1">
-              <div className="w-10 h-1 rounded-full" style={{ background: "rgba(255,255,255,0.15)" }} />
+              <div className="w-10 h-1 rounded-full" style={{ background: "rgba(0,0,0,0.15)" }} />
             </div>
             <CardBody branch={branch} waUrl={waUrl} mapsUrl={mapsUrl} phone={phone} onClose={onClose} />
           </motion.article>
@@ -269,19 +270,50 @@ const Marker = memo(function Marker({
   isVisible,
   staggerIndex,
   onClick,
+  isEditMode,
+  configPos,
+  configAppearance,
+  onDragEnd,
 }: {
   branch: Branch;
   isSelected: boolean;
   isVisible: boolean;
   staggerIndex: number;
   onClick: (b: Branch) => void;
+  isEditMode?: boolean;
+  configPos?: { x: number; y: number };
+  configAppearance?: { color?: string; size?: number; glow?: number; opacity?: number };
+  onDragEnd?: (e: any, info: any, branchId: number) => void;
 }) {
   const [hovered, setHovered] = useState(false);
+  
+  const currentPos = configPos || branch.mapPosition;
+  const currentApp = configAppearance || branch.appearance || {};
+  
+  const color = currentApp.color || "#DF2028";
+  const baseSize = currentApp.size || 11;
+  const hoverSize = baseSize + 5; // e.g. 16
+
+  // Helper to convert hex to rgba for the glow (simple implementation assuming hex color)
+  const hexToRgba = (hex: string, alpha: number) => {
+    const r = parseInt(hex.slice(1, 3), 16) || 223;
+    const g = parseInt(hex.slice(3, 5), 16) || 32;
+    const b = parseInt(hex.slice(5, 7), 16) || 40;
+    return `rgba(${r},${g},${b},${alpha})`;
+  };
 
   return (
     <motion.button
+      drag={isEditMode}
+      dragMomentum={false}
+      onDragEnd={(e, info) => onDragEnd?.(e, info, branch.id)}
       className="absolute -translate-x-1/2 -translate-y-1/2 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/40 focus-visible:ring-offset-1"
-      style={{ left: `${branch.mapPosition.x}%`, top: `${branch.mapPosition.y}%` }}
+      style={{ 
+        left: `${currentPos.x}%`, 
+        top: `${currentPos.y}%`,
+        cursor: isEditMode ? "grab" : "pointer",
+        zIndex: isSelected || hovered ? 30 : 20
+      }}
       onClick={() => onClick(branch)}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
@@ -299,20 +331,21 @@ const Marker = memo(function Marker({
     >
       {/* Pulse ring */}
       {!isSelected && (
-        <span className="absolute -inset-2 rounded-full animate-ping pointer-events-none" style={{ background: "rgba(239,68,68,0.25)" }} />
+        <span className="absolute -inset-2 rounded-full animate-ping pointer-events-none" style={{ background: hexToRgba(color, 0.25) }} />
       )}
 
       {/* Dot */}
       <motion.div
         animate={{
-          width:  isSelected || hovered ? 16 : 11,
-          height: isSelected || hovered ? 16 : 11,
+          width:  isSelected || hovered ? hoverSize : baseSize,
+          height: isSelected || hovered ? hoverSize : baseSize,
           boxShadow: isSelected || hovered
-            ? "0 0 0 3px rgba(239,68,68,0.35), 0 0 24px rgba(239,68,68,0.6)"
-            : "0 0 0 2px rgba(239,68,68,0.5), 0 0 8px rgba(239,68,68,0.3)",
+            ? `0 0 0 3px ${hexToRgba(color, 0.35)}, 0 0 24px ${hexToRgba(color, 0.6)}`
+            : `0 0 0 2px ${hexToRgba(color, 0.4)}, 0 0 8px ${hexToRgba(color, 0.3)}`,
         }}
         transition={{ duration: 0.2, ease: "easeOut" }}
-        className="rounded-full bg-red-500"
+        className="rounded-full"
+        style={{ backgroundColor: color }}
       />
 
       {/* City label tooltip */}
@@ -360,15 +393,48 @@ const Marker = memo(function Marker({
  */
 export default function IndonesiaMap({ currentFrame }: { currentFrame: number }) {
   const [selectedBranch, setSelectedBranch] = useState<Branch | null>(null);
+  const mapRef = useRef<HTMLDivElement>(null);
+  const { isEditMode, config, updateConfig, setSelectedId } = useEditor();
 
   const isMapVisible   = currentFrame >= INDONESIA_START_FRAME;
   const markersVisible = currentFrame >= INDONESIA_MARKERS_FRAME;
 
   const handleMarkerClick = useCallback((branch: Branch) => {
-    setSelectedBranch((prev) => (prev?.id === branch.id ? null : branch));
-  }, []);
+    if (isEditMode) {
+      setSelectedId(`marker-${branch.id}`);
+    } else {
+      setSelectedBranch((prev) => (prev?.id === branch.id ? null : branch));
+    }
+  }, [isEditMode, setSelectedId]);
 
   const handleClose = useCallback(() => setSelectedBranch(null), []);
+
+  const handleDragEnd = useCallback((e: any, info: any, branchId: number) => {
+    if (!mapRef.current) return;
+    const mapRect = mapRef.current.getBoundingClientRect();
+    
+    // Calculate new percentage based on the dragged point (info.point is viewport relative)
+    // We must account for the current offset because framer-motion drag modifies the transform.
+    // Wait, if it's absolute positioned, it's better to just read the element's new bounds.
+    // However, info.point gives the screen coordinate of the pointer.
+    const xPct = ((info.point.x - mapRect.left) / mapRect.width) * 100;
+    const yPct = ((info.point.y - mapRect.top) / mapRect.height) * 100;
+    
+    // Clamp to 0-100
+    const finalX = Math.max(0, Math.min(100, xPct));
+    const finalY = Math.max(0, Math.min(100, yPct));
+
+    updateConfig((prev) => ({
+      ...prev,
+      branches: {
+        ...(prev.branches || {}),
+        [branchId]: {
+          ...(prev.branches?.[branchId] || {}),
+          mapPosition: { x: finalX, y: finalY }
+        }
+      }
+    }));
+  }, [updateConfig]);
 
   // Auto-close when leaving the Indonesia scene
   const prevVisible = useRef(isMapVisible);
@@ -383,50 +449,36 @@ export default function IndonesiaMap({ currentFrame }: { currentFrame: number })
         {isMapVisible && (
           <motion.section
             key="indonesia-map"
-            className="fixed inset-0 flex flex-col"
-            style={{ zIndex: 20, background: "#050a14" }}
+            className="fixed inset-0 flex items-center justify-center p-6 md:p-12"
+            style={{ 
+              zIndex: 20, 
+              background: "rgba(5, 10, 20, 0.60)",
+              pointerEvents: "none"
+            }}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94] }}
             aria-label="Indonesia Distribution Network — PT Indofresh"
           >
-            {/* Header */}
+            {/* Interactive Map Container */}
             <motion.div
-              className="flex-shrink-0 pt-16 md:pt-20 px-8 md:px-14 pb-3"
-              initial={{ opacity: 0, y: 18 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.55, delay: 0.25 }}
-            >
-              <p className="text-[10px] font-bold tracking-[0.28em] uppercase mb-3" style={{ color: "rgba(255,255,255,0.35)" }}>
-                Distribution Network
-              </p>
-              <h2
-                className="font-extrabold leading-[1.0] tracking-[-0.03em] text-white"
-                style={{ fontSize: "clamp(2.2rem, 4vw, 3.4rem)", textShadow: "0 4px 24px rgba(0,0,0,0.6)" }}
-              >
-                Freshness From{" "}
-                <span style={{ color: "rgba(255,255,255,0.45)" }}>Across Indonesia.</span>
-              </h2>
-              <p className="mt-2 font-semibold text-white/30" style={{ fontSize: "clamp(0.75rem, 1.1vw, 0.9rem)" }}>
-                8 strategic branch locations · One seamless cold chain · Nationwide delivery, daily
-              </p>
-            </motion.div>
-
-            {/* Map container */}
-            <motion.div
-              className="flex-1 flex items-center justify-center px-6 md:px-10 pb-3 min-h-0"
-              initial={{ opacity: 0, scale: 0.97 }}
+              className="relative w-full flex items-center justify-center min-h-0"
+              initial={{ opacity: 0, scale: 0.96 }}
               animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.65, delay: 0.3 }}
+              transition={{ duration: 0.65, delay: 0.2 }}
             >
               <div
+                ref={mapRef}
                 className="relative w-full overflow-hidden rounded-2xl"
                 style={{
-                  maxWidth: "min(100%, calc((100vh - 180px) * 16 / 9))",
+                  maxWidth: "min(92vw, 1150px, (100vh - 120px) * 16 / 9)",
                   aspectRatio: "16 / 9",
+                  background: "rgba(255,255,255,0.02)",
                   border: "1px solid rgba(255,255,255,0.08)",
-                  boxShadow: "0 24px 80px rgba(0,0,0,0.6)",
+                  boxShadow: "0 20px 60px rgba(0,0,0,0.4), inset 0 0 0 1px rgba(255,255,255,0.05)",
+                  backdropFilter: "blur(8px)",
+                  pointerEvents: "auto",
                 }}
               >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -434,13 +486,14 @@ export default function IndonesiaMap({ currentFrame }: { currentFrame: number })
                   src="/indonesia-map.jpg"
                   alt="Indonesia distribution network — 8 branch locations across the archipelago"
                   className="w-full h-full object-cover"
+                  style={{ opacity: 0.85, mixBlendMode: "lighten" }}
                   draggable={false}
                 />
 
                 {/* Edge vignette */}
                 <div
                   className="absolute inset-0 pointer-events-none"
-                  style={{ background: "radial-gradient(ellipse at center, transparent 50%, rgba(5,10,20,0.5) 100%)" }}
+                  style={{ background: "radial-gradient(ellipse at center, transparent 70%, rgba(5,10,20,0.2) 100%)" }}
                 />
 
                 {/* Branch markers — sequential appearance at frame 294+, 120ms stagger */}
@@ -449,35 +502,16 @@ export default function IndonesiaMap({ currentFrame }: { currentFrame: number })
                     key={branch.id}
                     branch={branch}
                     isSelected={selectedBranch?.id === branch.id}
-                    isVisible={markersVisible}
+                    isVisible={markersVisible || isEditMode}
                     staggerIndex={MARKER_ORDER[branch.id] ?? branch.id - 1}
                     onClick={handleMarkerClick}
+                    isEditMode={isEditMode}
+                    configPos={config.branches?.[branch.id]?.mapPosition}
+                    configAppearance={config.branches?.[branch.id]?.appearance}
+                    onDragEnd={handleDragEnd}
                   />
                 ))}
               </div>
-            </motion.div>
-
-            {/* Stats bar */}
-            <motion.div
-              className="flex-shrink-0 px-8 md:px-14 pb-5 flex items-center gap-10"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.5, delay: 0.55 }}
-            >
-              {[
-                { value: "8",   label: "Branch Locations" },
-                { value: "13+", label: "Provinces Reached" },
-                { value: "5",   label: "Export Markets"   },
-              ].map((stat) => (
-                <div key={stat.label} className="flex flex-col gap-0.5">
-                  <span className="font-bold text-white/90 tracking-tight" style={{ fontSize: "clamp(1.2rem, 2vw, 1.5rem)" }}>
-                    {stat.value}
-                  </span>
-                  <span className="font-semibold uppercase tracking-[0.18em] text-white/25" style={{ fontSize: "0.6rem" }}>
-                    {stat.label}
-                  </span>
-                </div>
-              ))}
             </motion.div>
           </motion.section>
         )}

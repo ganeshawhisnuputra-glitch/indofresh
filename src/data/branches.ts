@@ -23,6 +23,13 @@ export interface Branch {
   address: string[];
   /** Marker position as % of the 16:9 image container */
   mapPosition: { x: number; y: number };
+  /** Optional styling overrides for the map marker */
+  appearance?: {
+    color?: string;
+    size?: number;
+    glow?: number;
+    opacity?: number;
+  };
   /** Google Maps search query string */
   mapsQuery: string;
 }
@@ -39,7 +46,7 @@ export const BRANCHES: Branch[] = [
       "RT.8/RW.11, Ancol, Pademangan",
       "Jakarta Utara, DKI Jakarta 14430",
     ],
-    mapPosition: { x: 28.5, y: 63 },
+    mapPosition: { x: 26.33, y: 64.99 },
     mapsQuery: "Jl Parang Tritis Raya No 38 Ancol Pademangan Jakarta Utara",
   },
   {
@@ -53,7 +60,7 @@ export const BRANCHES: Branch[] = [
       "Blok E No.3A, Bahagia",
       "Babelan, Bekasi, Jawa Barat 17211",
     ],
-    mapPosition: { x: 31.5, y: 63 },
+    mapPosition: { x: 28.65, y: 65.71 },
     mapsQuery: "Pergudangan Marunda Center Babelan Bekasi West Java",
   },
   {
@@ -67,7 +74,7 @@ export const BRANCHES: Branch[] = [
       "Blok H1 No.7, Ngaliyan",
       "Semarang, Jawa Tengah",
     ],
-    mapPosition: { x: 39.5, y: 63 },
+    mapPosition: { x: 35.19, y: 67.42 },
     mapsQuery: "Kawasan Industri Candi Ngaliyan Semarang Central Java",
   },
   {
@@ -81,7 +88,7 @@ export const BRANCHES: Branch[] = [
       "Bringinbendo, Taman",
       "Sidoarjo, Jawa Timur 61257",
     ],
-    mapPosition: { x: 47, y: 64 },
+    mapPosition: { x: 41.40, y: 72.48 },
     mapsQuery: "Bringinbendo Taman Sidoarjo East Java",
   },
   {
@@ -95,7 +102,7 @@ export const BRANCHES: Branch[] = [
       "Ketewel, Sukawati",
       "Gianyar, Bali 80582",
     ],
-    mapPosition: { x: 51, y: 67 },
+    mapPosition: { x: 44.49, y: 74.06 },
     mapsQuery: "Jl Prof Dr Ida Bagus Mantra No 170 Sukawati Gianyar Bali",
   },
   {
@@ -109,7 +116,7 @@ export const BRANCHES: Branch[] = [
       "Parangloe Indah",
       "Makassar, Sulawesi Selatan",
     ],
-    mapPosition: { x: 63, y: 58 },
+    mapPosition: { x: 54.21, y: 60.85 },
     mapsQuery: "Pergudangan Industri Parangloe Indah Makassar South Sulawesi",
   },
   {
@@ -123,7 +130,7 @@ export const BRANCHES: Branch[] = [
       "Jl. Gubernur H.M. Ali Amin",
       "Sukarame, Palembang, Sumatera Selatan",
     ],
-    mapPosition: { x: 25.5, y: 52 },
+    mapPosition: { x: 22.49, y: 56.56 },
     mapsQuery: "Pergudangan Sukarami Sukarame Palembang South Sumatra",
   },
   {
@@ -137,7 +144,7 @@ export const BRANCHES: Branch[] = [
       "Karang Joang",
       "Balikpapan Utara, Kalimantan Timur",
     ],
-    mapPosition: { x: 60.5, y: 46 },
+    mapPosition: { x: 46.13, y: 44.99 },
     mapsQuery: "Jl AMD Pulau Balang Karang Joang Balikpapan Utara East Kalimantan",
   },
 ];

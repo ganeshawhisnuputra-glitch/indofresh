@@ -7,6 +7,7 @@ import HeroCanvas from "@/components/HeroCanvas";
 import TimelineOverlay from "@/components/TimelineOverlay";
 import IndonesiaMap from "@/components/IndonesiaMap";
 import LoadingScreen from "@/components/LoadingScreen";
+import PostMapFlow from "@/components/PostMapFlow";
 
 import {
   scrollToFrame,
@@ -33,7 +34,7 @@ const MIN_LOADING_MS = 2200;
  *  z-9999 LoadingScreen  — position:fixed, removed after frames ready + min time
  *
  * Scroll engine:
- *  • document.body.style.height = getTotalScrollHeight() creates the scroll track.
+ *  • A hidden div creates the scroll track via height.
  *  • All visual elements are position:fixed — they NEVER move.
  *  • window.addEventListener('scroll') reads window.scrollY and dispatches
  *    indofresh:frame events consumed by HeroCanvas, TimelineOverlay,
@@ -59,6 +60,7 @@ export default function Home() {
 
   // ── Current frame (for IndonesiaMap visibility gate) ─────────────────────
   const [currentFrame, setCurrentFrame] = useState(0);
+  const [totalScrollTrackHeight, setTotalScrollTrackHeight] = useState(6446);
 
   // ── Refs (never trigger re-renders) ──────────────────────────────────────
   const lastFrameRef = useRef(0);
@@ -74,16 +76,12 @@ export default function Home() {
 
   // ── Effects ──────────────────────────────────────────────────────────────
 
-  // 1. Set body height = total scroll height, creating the "invisible scroll track"
-  //    All fixed elements are NOT in document flow, so this is the only thing
-  //    that makes the document tall enough to scroll.
+  // 1. Calculate and set total scroll track height
   useEffect(() => {
     const totalHeight = getTotalScrollHeight();
-    document.body.style.height = `${totalHeight}px`;
-    // Prevent horizontal overflow from the spacer
+    setTotalScrollTrackHeight(totalHeight);
     document.body.style.overflowX = "hidden";
     return () => {
-      document.body.style.height = "";
       document.body.style.overflowX = "";
     };
   }, []);
@@ -165,9 +163,22 @@ export default function Home() {
       <IndonesiaMap currentFrame={currentFrame} />
 
       {/*
-       * Layer 4 — Loading Screen
+       * Invisible Scroll Track Spacer — Creates document height for 293 frame scroll sequence
+       */}
+      <div
+        style={{ height: `${totalScrollTrackHeight}px` }}
+        className="pointer-events-none"
+        aria-hidden="true"
+      />
+
+      {/*
+       * Layer 4 — Post-Map Business Journey Flow
+       */}
+      <PostMapFlow />
+
+      {/*
+       * Layer 5 — Loading Screen
        * position:fixed, z-index:9999
-       * AnimatePresence plays the exit animation before unmounting.
        */}
       <AnimatePresence mode="wait">
         {isLoading && (

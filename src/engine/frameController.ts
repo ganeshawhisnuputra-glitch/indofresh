@@ -16,7 +16,7 @@
 //  • NEVER setInterval — there are no timers anywhere in this file.
 //  • Reversible — scrolling up returns to earlier frames.
 
-export const TOTAL_FRAMES = 297;
+export const TOTAL_FRAMES = 293;
 
 // ─── Scroll sensitivity ───────────────────────────────────────────────────────
 // How many CSS pixels of scroll each normal frame consumes.
@@ -31,43 +31,43 @@ const PX_PER_FRAME = 22;
 // stretching the actual frame sequence.
 //
 // Hold distances (from official storyboard V3):
-//   Scene 3  (Fruit Grading)   — holdDistance: 150px → frame 100 × 8  = 160px
-//   Scene 4  (Cold Storage)    — holdDistance: 300px → frame 125 × 15 = 300px
-//   Scene 5  (Trusted Brands)  — holdDistance: 100px → frame 161 × 5  = 100px
-//   Scene 7  (China)           — holdDistance: 200px → frame 213 × 10 = 200px
-//   Scene 8  (Malaysia)        — holdDistance: 250px → frame 220 × 13 = 260px
-//   Scene 9  (Thailand)        — holdDistance: 650px → frames 227+228 × 17 = 680px
-//   Scene 10 (New Zealand)     — holdDistance: 700px → frames 235+236 × 18+17 = 700px
+//   Scene 3  (Fruit Grading)   — holdDistance: 150px → frame 96 × 8  = 160px
+//   Scene 4  (Cold Storage)    — holdDistance: 300px → frame 121 × 15 = 300px
+//   Scene 5  (Trusted Brands)  — holdDistance: 100px → frame 157 × 5  = 100px
+//   Scene 7  (China)           — holdDistance: 200px → frame 209 × 10 = 200px
+//   Scene 8  (Malaysia)        — holdDistance: 250px → frame 216 × 13 = 260px
+//   Scene 9  (Thailand)        — holdDistance: 650px → frames 223+224 × 17 = 680px
+//   Scene 10 (New Zealand)     — holdDistance: 700px → frames 231+232 × 18+17 = 700px
 const HOLD_MULTIPLIERS: Readonly<Partial<Record<number, number>>> = {
   // Scene 3 — Fruit Grading Integration
-  100: 8,
+  96: 8,
   // Scene 4 — Cold Storage Operations
-  125: 15,
+  121: 15,
   // Scene 5 — Trusted Brands
-  161: 5,
+  157: 5,
   // Scene 7 — China
-  213: 10,
+  209: 10,
   // Scene 8 — Malaysia
-  220: 13,
+  216: 13,
   // Scene 9 — Thailand (2 hold frames)
-  227: 18,
-  228: 18,
+  223: 18,
+  224: 18,
   // Scene 10 — New Zealand (2 hold frames)
-  235: 20,
-  236: 18,
+  231: 20,
+  232: 18,
   // Scene 11 — USA (hold before final scene transition)
-  288: 8,
-  289: 8,
-  290: 8,
+  284: 8,
+  285: 8,
+  286: 8,
   // Scene 12 — Indonesia Distribution Network
   // Large holds so the map is always reachable + usable
-  // Users on 1080p screens need ~800px of scroll headroom to reach frame 291+.
-  291: 40,  // map fades in
-  292: 40,  // map fully visible
-  293: 40,  // text readable
-  294: 50,  // markers begin appearing
-  295: 80,  // all markers interactive — primary interaction zone
-  296: 50,  // linger on final scene
+  // Users on 1080p screens need ~800px of scroll headroom to reach frame 287+.
+  287: 40,  // map fades in
+  288: 40,  // map fully visible
+  289: 40,  // text readable
+  290: 50,  // markers begin appearing
+  291: 80,  // all markers interactive — primary interaction zone
+  292: 50,  // linger on final scene
 };
 
 function pxForFrame(frame: number): number {

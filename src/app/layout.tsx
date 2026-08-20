@@ -1,5 +1,15 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
+import { EditorShell } from "@/editor/EditorShell";
 import "./globals.css";
+
+// ─── Viewport Configuration ───────────────────────────────────────────────────
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+  viewportFit: "cover",
+  themeColor: "#050A14",
+};
 
 // ─── SEO Metadata (Doc 10 — exact client-approved copy) ───────────────────────
 export const metadata: Metadata = {
@@ -48,15 +58,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className="bg-[#050A14] text-white">
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta name="theme-color" content="#050505" />
       </head>
-      <body className="bg-brand-bg text-brand-foreground font-inter antialiased">
-        {children}
+      <body className="bg-[#050A14] text-white font-sans antialiased selection:bg-[#DF2028]/30 selection:text-white">
+        <EditorShell>
+          {children}
+        </EditorShell>
       </body>
     </html>
   );
