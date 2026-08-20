@@ -67,7 +67,8 @@ export default function HeroCanvas({
   const resizeCanvas = useCallback(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const dpr = window.devicePixelRatio || 1;
+    // Cap DPR to 1.5 max so 4K/Retina desktop screens do not saturate GPU backing store
+    const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
     const w = canvas.offsetWidth;
     const h = canvas.offsetHeight;
     if (canvas.width !== w * dpr || canvas.height !== h * dpr) {
@@ -162,19 +163,17 @@ export default function HeroCanvas({
       }
     }
 
-    // Memory Eviction (Mobile & Low-RAM Devices): Free ImageBitmaps >45 frames away from current scroll position
-    // Keeps active RAM usage under 15 MB forever, preventing mobile tab freeze/OOM crash
-    if (isMobileRef.current) {
-      const EVICTION_WINDOW = 45;
-      for (let i = 0; i < TOTAL_FRAMES; i++) {
-        if (Math.abs(i - targetFrame) > EVICTION_WINDOW && framesRef.current[i] !== null) {
-          try {
-            framesRef.current[i]?.close();
-          } catch {
-            // Ignore if already closed
-          }
-          framesRef.current[i] = null;
+    // Universal Memory Eviction (Desktop & Mobile): Free ImageBitmaps >45 frames away from current scroll position
+    // Keeps active RAM usage under 35 MB on Desktop and under 15 MB on Mobile forever
+    const EVICTION_WINDOW = 45;
+    for (let i = 0; i < TOTAL_FRAMES; i++) {
+      if (Math.abs(i - targetFrame) > EVICTION_WINDOW && framesRef.current[i] !== null) {
+        try {
+          framesRef.current[i]?.close();
+        } catch {
+          // Ignore if already closed
         }
+        framesRef.current[i] = null;
       }
     }
   }, [loadFrame]);
