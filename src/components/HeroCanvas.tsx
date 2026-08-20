@@ -166,27 +166,28 @@ export default function HeroCanvas({
   );
 
   // ── Priority loader ────────────────────────────────────────────────────────
-  // Frame 0 → first batch → rest in background (no UI blocking)
+  // Frame 0 → initial 25-frame hero batch → background stream rest (zero mobile lag)
   const loadAllFrames = useCallback(async () => {
     // 1. Frame 0 — immediate paint
     await loadFrame(0);
     isDirtyRef.current = true;
 
-    // 2. First batch — loads before user can scroll past them
-    const firstBatch = Array.from(
-      { length: Math.min(BATCH_SIZE, TOTAL_FRAMES - 1) },
-      (_, i) => i + 1
-    );
-    await Promise.all(firstBatch.map(loadFrame));
-
-    // 3. Remaining frames — stream in background without blocking
-    for (let start = BATCH_SIZE + 1; start < TOTAL_FRAMES; start += BATCH_SIZE) {
-      const end = Math.min(start + BATCH_SIZE, TOTAL_FRAMES);
-      await Promise.all(
-        Array.from({ length: end - start }, (_, i) => start + i).map(loadFrame)
+    // 2. Initial batch (frames 1..25) — stream in parallel 5-frame chunks for instant load
+    const INITIAL_BATCH = 25;
+    for (let i = 1; i <= INITIAL_BATCH; i += 5) {
+      const chunk = Array.from(
+        { length: Math.min(5, INITIAL_BATCH - i + 1) },
+        (_, k) => i + k
       );
-      // Yield to main thread between batches (prevents long task jank)
-      await new Promise<void>((r) => setTimeout(r, 0));
+      await Promise.all(chunk.map(loadFrame));
+    }
+
+    // 3. Remaining frames — background stream in 5-frame chunks with 16ms yields for 60fps UI
+    for (let start = INITIAL_BATCH + 1; start < TOTAL_FRAMES; start += 5) {
+      const end = Math.min(start + 5, TOTAL_FRAMES);
+      const chunk = Array.from({ length: end - start }, (_, i) => start + i);
+      await Promise.all(chunk.map(loadFrame));
+      await new Promise<void>((r) => setTimeout(r, 16));
     }
 
     onAllFramesReady?.();

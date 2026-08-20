@@ -19,7 +19,7 @@ import {
 // The loading screen persists until BOTH:
 //  1. All frames are decoded (real decode progress = 100%)
 //  2. A minimum aesthetic floor has elapsed (so fast connections still see the brand)
-const MIN_LOADING_MS = 2200;
+const MIN_LOADING_MS = 800;
 
 // ─── Page component ────────────────────────────────────────────────────────────
 
@@ -48,15 +48,17 @@ export default function Home() {
   const [loadedFrames, setLoadedFrames] = useState(0);
   const [minTimeElapsed, setMinTimeElapsed] = useState(false);
 
-  // Real decode progress as percentage (0–100)
+  // Fast Mobile Loading: Hero initial batch threshold (25 frames) for instant presentation.
+  // Remaining frames continue background streaming seamlessly without blocking the user.
+  const REQUIRED_INITIAL_FRAMES = 25;
   const loadProgress = Math.min(
-    Math.floor((loadedFrames / TOTAL_FRAMES) * 100),
+    Math.floor((loadedFrames / REQUIRED_INITIAL_FRAMES) * 100),
     100
   );
 
-  // Loading ends when both conditions are met
-  const allFramesDecoded = loadedFrames >= TOTAL_FRAMES;
-  const isLoading = !allFramesDecoded || !minTimeElapsed;
+  // Loading ends when initial hero batch is ready + min aesthetic floor elapsed
+  const initialBatchReady = loadedFrames >= REQUIRED_INITIAL_FRAMES;
+  const isLoading = !initialBatchReady || !minTimeElapsed;
 
   // ── Current frame (for IndonesiaMap visibility gate) ─────────────────────
   const [currentFrame, setCurrentFrame] = useState(0);
