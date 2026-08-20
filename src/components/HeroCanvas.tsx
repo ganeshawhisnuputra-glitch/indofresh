@@ -20,13 +20,12 @@ interface HeroCanvasProps {
 // ─── Constants ────────────────────────────────────────────────────────────────
 
 const TOTAL_FRAMES = 293;
-const BASE_PATH = "frames";
-const BATCH_SIZE = 20;
 
-function getFrameUrl(index: number): string {
+function getFrameUrl(index: number, isMobile: boolean): string {
   const padded = String(index).padStart(3, "0");
+  const folder = isMobile ? "frames_mobile" : "frames";
   const ext = index <= 45 ? "png" : "webp";
-  return `/${BASE_PATH}/frame_${padded}.${ext}`;
+  return `/${folder}/frame_${padded}.${ext}`;
 }
 
 function clamp(v: number, lo: number, hi: number): number {
@@ -36,25 +35,7 @@ function clamp(v: number, lo: number, hi: number): number {
 // ─── Component ────────────────────────────────────────────────────────────────
 
 /**
- * HeroCanvas — V2 Architecture
- *
- * RESPONSIBILITIES (strictly limited):
- *  1. Load the 293-frame ImageBitmap pool with priority ordering.
- *  2. Subscribe to the `indofresh:frame` custom event (dispatched by the
- *     scroll engine in page.tsx) and render the requested frame.
- *  3. Paint only when the frame changes (dirty-flag RAF loop).
- *  4. Cover-fit scale to fill the viewport at any aspect ratio.
- *  5. Report decode progress via the onProgress callback.
- *
- * DOES NOT:
- *  ✗  Handle wheel events
- *  ✗  Handle touch events
- *  ✗  Maintain any scroll state
- *  ✗  Autoplay
- *  ✗  Use timers or setInterval
- *
- * Scroll input is handled entirely by the scroll engine in page.tsx.
- * This component is a pure frame renderer.
+ * HeroCanvas — Targeted Responsive & Progressive Performance Architecture
  */
 export default function HeroCanvas({
   isVisible,
@@ -63,10 +44,16 @@ export default function HeroCanvas({
 }: HeroCanvasProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
+  // ── Mobile vs Desktop detection ref ───────────────────────────────────────
+  const isMobileRef = useRef<boolean>(false);
+
   // ── Frame pool ──────────────────────────────────────────────────────────────
   const framesRef = useRef<(ImageBitmap | null)[]>(
     new Array(TOTAL_FRAMES).fill(null)
   );
+  // Track in-flight fetch promises to prevent duplicate fetches
+  const fetchingRef = useRef<Set<number>>(new Set());
+
   // Current rendered frame index
   const currentFrameRef = useRef<number>(0);
   // Set to true whenever currentFrameRef changes — RAF loop clears it
@@ -123,8 +110,6 @@ export default function HeroCanvas({
   }, []);
 
   // ── RAF render loop ────────────────────────────────────────────────────────
-  // Runs at display refresh rate. Repaints only when isDirtyRef is true.
-  // Frame NEVER advances on its own — it only draws what currentFrameRef holds.
   const startRenderLoop = useCallback(() => {
     const tick = () => {
       if (isDirtyRef.current) {
@@ -139,9 +124,11 @@ export default function HeroCanvas({
   // ── Single frame decoder ───────────────────────────────────────────────────
   const loadFrame = useCallback(
     async (index: number): Promise<void> => {
-      if (framesRef.current[index] !== null) return;
+      if (framesRef.current[index] !== null || fetchingRef.current.has(index)) return;
+      fetchingRef.current.add(index);
       try {
-        const res = await fetch(getFrameUrl(index));
+        const url = getFrameUrl(index, isMobileRef.current);
+        const res = await fetch(url);
         if (!res.ok) return;
         const blob = await res.blob();
         const bitmap = await createImageBitmap(blob, {
@@ -153,26 +140,41 @@ export default function HeroCanvas({
         loadedCountRef.current++;
         onProgress(loadedCountRef.current, TOTAL_FRAMES);
 
-        // Frame 0 ready — draw immediately so loading screen has something to
-        // reveal when it fades out.
-        if (index === 0) {
+        if (index === currentFrameRef.current || index === 0) {
           isDirtyRef.current = true;
         }
       } catch {
-        // Silently skip — sequence stays playable with skipped frames
+        // Silently skip
+      } finally {
+        fetchingRef.current.delete(index);
       }
     },
     [onProgress]
   );
 
-  // ── Priority loader ────────────────────────────────────────────────────────
-  // Frame 0 → initial 25-frame hero batch → background stream rest (zero mobile lag)
+  // ── Priority & Nearby Viewport Loader ─────────────────────────────────────
+  const loadNearbyFrames = useCallback((targetFrame: number) => {
+    const start = clamp(targetFrame - 5, 0, TOTAL_FRAMES - 1);
+    const end = clamp(targetFrame + 15, 0, TOTAL_FRAMES - 1);
+    for (let f = start; f <= end; f++) {
+      if (framesRef.current[f] === null && !fetchingRef.current.has(f)) {
+        loadFrame(f);
+      }
+    }
+  }, [loadFrame]);
+
+  // ── Priority Loader (Initial gate + progressive background stream) ────────
   const loadAllFrames = useCallback(async () => {
+    // Detect mobile viewport
+    if (typeof window !== "undefined") {
+      isMobileRef.current = window.innerWidth < 768;
+    }
+
     // 1. Frame 0 — immediate paint
     await loadFrame(0);
     isDirtyRef.current = true;
 
-    // 2. Initial batch (frames 1..25) — stream in parallel 5-frame chunks for instant load
+    // 2. Initial batch (frames 1..25) for instant presentation
     const INITIAL_BATCH = 25;
     for (let i = 1; i <= INITIAL_BATCH; i += 5) {
       const chunk = Array.from(
@@ -182,7 +184,7 @@ export default function HeroCanvas({
       await Promise.all(chunk.map(loadFrame));
     }
 
-    // 3. Remaining frames — background stream in 5-frame chunks with 16ms yields for 60fps UI
+    // 3. Remaining frames — background stream in 5-frame chunks with yields
     for (let start = INITIAL_BATCH + 1; start < TOTAL_FRAMES; start += 5) {
       const end = Math.min(start + 5, TOTAL_FRAMES);
       const chunk = Array.from({ length: end - start }, (_, i) => start + i);
@@ -194,11 +196,12 @@ export default function HeroCanvas({
   }, [loadFrame, onAllFramesReady]);
 
   // ── Subscribe to frame events from the scroll engine ──────────────────────
-  // The scroll engine in page.tsx computes the current frame from window.scrollY
-  // and dispatches `indofresh:frame`. This is the only way frames advance.
   useEffect(() => {
     const handler = ((e: CustomEvent<{ frame: number }>) => {
       const frame = clamp(e.detail.frame, 0, TOTAL_FRAMES - 1);
+
+      // Preload nearby frames around current scroll target
+      loadNearbyFrames(frame);
 
       // Walk backwards from target to find nearest decoded frame
       for (let i = frame; i >= 0; i--) {
@@ -214,7 +217,7 @@ export default function HeroCanvas({
 
     window.addEventListener("indofresh:frame", handler, { passive: true });
     return () => window.removeEventListener("indofresh:frame", handler);
-  }, []);
+  }, [loadNearbyFrames]);
 
   // ── Lifecycle ──────────────────────────────────────────────────────────────
 

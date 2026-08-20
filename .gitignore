@@ -40,3 +40,6 @@ next-env.d.ts
 /public/frames_original_backup
 /public/test_input
 /public/test_output
+scratch_*.js
+restore_*.js
+generate_*.js
