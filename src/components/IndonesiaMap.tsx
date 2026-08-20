@@ -488,6 +488,8 @@ export default function IndonesiaMap({ currentFrame }: { currentFrame: number })
                   className="w-full h-full object-cover"
                   style={{ opacity: 0.85, mixBlendMode: "lighten" }}
                   draggable={false}
+                  loading="lazy"
+                  decoding="async"
                 />
 
                 {/* Edge vignette */}

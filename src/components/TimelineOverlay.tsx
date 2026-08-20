@@ -771,6 +771,8 @@ export default function TimelineOverlay({ isVisible }: TimelineOverlayProps) {
                   src={selectedProduct.image}
                   alt={selectedProduct.name}
                   className="max-w-full max-h-[68vh] w-auto h-auto object-contain drop-shadow-2xl select-none"
+                  loading="lazy"
+                  decoding="async"
                 />
               </div>
 
