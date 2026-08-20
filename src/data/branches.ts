@@ -46,7 +46,7 @@ export const BRANCHES: Branch[] = [
       "RT.8/RW.11, Ancol, Pademangan",
       "Jakarta Utara, DKI Jakarta 14430",
     ],
-    mapPosition: { x: 26.33, y: 64.99 },
+    mapPosition: { x: 26.43, y: 65.68 },
     mapsQuery: "Jl Parang Tritis Raya No 38 Ancol Pademangan Jakarta Utara",
   },
   {
@@ -60,7 +60,7 @@ export const BRANCHES: Branch[] = [
       "Blok E No.3A, Bahagia",
       "Babelan, Bekasi, Jawa Barat 17211",
     ],
-    mapPosition: { x: 28.65, y: 65.71 },
+    mapPosition: { x: 28.58, y: 66.44 },
     mapsQuery: "Pergudangan Marunda Center Babelan Bekasi West Java",
   },
   {
@@ -74,7 +74,7 @@ export const BRANCHES: Branch[] = [
       "Blok H1 No.7, Ngaliyan",
       "Semarang, Jawa Tengah",
     ],
-    mapPosition: { x: 35.19, y: 67.42 },
+    mapPosition: { x: 34.66, y: 68.11 },
     mapsQuery: "Kawasan Industri Candi Ngaliyan Semarang Central Java",
   },
   {
@@ -88,7 +88,7 @@ export const BRANCHES: Branch[] = [
       "Bringinbendo, Taman",
       "Sidoarjo, Jawa Timur 61257",
     ],
-    mapPosition: { x: 41.40, y: 72.48 },
+    mapPosition: { x: 40.39, y: 73.24 },
     mapsQuery: "Bringinbendo Taman Sidoarjo East Java",
   },
   {
@@ -102,7 +102,7 @@ export const BRANCHES: Branch[] = [
       "Ketewel, Sukawati",
       "Gianyar, Bali 80582",
     ],
-    mapPosition: { x: 44.49, y: 74.06 },
+    mapPosition: { x: 43.26, y: 74.81 },
     mapsQuery: "Jl Prof Dr Ida Bagus Mantra No 170 Sukawati Gianyar Bali",
   },
   {
@@ -116,7 +116,7 @@ export const BRANCHES: Branch[] = [
       "Parangloe Indah",
       "Makassar, Sulawesi Selatan",
     ],
-    mapPosition: { x: 54.21, y: 60.85 },
+    mapPosition: { x: 52.26, y: 61.44 },
     mapsQuery: "Pergudangan Industri Parangloe Indah Makassar South Sulawesi",
   },
   {
@@ -130,7 +130,7 @@ export const BRANCHES: Branch[] = [
       "Jl. Gubernur H.M. Ali Amin",
       "Sukarame, Palembang, Sumatera Selatan",
     ],
-    mapPosition: { x: 22.49, y: 56.56 },
+    mapPosition: { x: 22.86, y: 57.10 },
     mapsQuery: "Pergudangan Sukarami Sukarame Palembang South Sumatra",
   },
   {
@@ -144,7 +144,7 @@ export const BRANCHES: Branch[] = [
       "Karang Joang",
       "Balikpapan Utara, Kalimantan Timur",
     ],
-    mapPosition: { x: 46.13, y: 44.99 },
+    mapPosition: { x: 44.78, y: 45.40 },
     mapsQuery: "Jl AMD Pulau Balang Karang Joang Balikpapan Utara East Kalimantan",
   },
 ];
