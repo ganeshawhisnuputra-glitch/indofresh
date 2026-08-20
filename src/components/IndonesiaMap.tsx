@@ -519,21 +519,23 @@ export default function IndonesiaMap({ currentFrame }: { currentFrame: number })
                   style={{ background: "radial-gradient(ellipse at center, transparent 70%, rgba(5,10,20,0.2) 100%)" }}
                 />
 
-                {/* Branch markers — sequential appearance at frame 294+, 120ms stagger */}
-                {BRANCHES.map((branch) => (
-                  <Marker
-                    key={branch.id}
-                    branch={branch}
-                    isSelected={selectedBranch?.id === branch.id}
-                    isVisible={markersVisible || isEditMode}
-                    staggerIndex={MARKER_ORDER[branch.id] ?? branch.id - 1}
-                    onClick={handleMarkerClick}
-                    isEditMode={isEditMode}
-                    configPos={config.branches?.[branch.id]?.mapPosition}
-                    configAppearance={config.branches?.[branch.id]?.appearance}
-                    onDragEnd={handleDragEnd}
-                  />
-                ))}
+                {/* Dedicated Marker Layer — Global Y-offset -5.0% shifts markers UP onto map geography */}
+                <div className="absolute inset-0 pointer-events-none" style={{ transform: "translateY(-5.0%)", zIndex: 25 }}>
+                  {BRANCHES.map((branch) => (
+                    <Marker
+                      key={branch.id}
+                      branch={branch}
+                      isSelected={selectedBranch?.id === branch.id}
+                      isVisible={markersVisible || isEditMode}
+                      staggerIndex={MARKER_ORDER[branch.id] ?? branch.id - 1}
+                      onClick={handleMarkerClick}
+                      isEditMode={isEditMode}
+                      configPos={config.branches?.[branch.id]?.mapPosition}
+                      configAppearance={config.branches?.[branch.id]?.appearance}
+                      onDragEnd={handleDragEnd}
+                    />
+                  ))}
+                </div>
               </div>
             </motion.div>
           </motion.section>
