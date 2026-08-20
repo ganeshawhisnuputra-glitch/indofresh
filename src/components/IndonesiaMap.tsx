@@ -494,8 +494,8 @@ export default function IndonesiaMap({ currentFrame }: { currentFrame: number })
                 ref={mapRef}
                 className="relative w-full overflow-hidden rounded-2xl"
                 style={{
-                  maxWidth: "min(100%, calc((100vh - 180px) * 1376 / 768))",
-                  aspectRatio: "1376 / 768",
+                  maxWidth: "min(100%, calc((100vh - 180px) * 16 / 9))",
+                  aspectRatio: "16 / 9",
                   background: "rgba(255,255,255,0.02)",
                   border: "1px solid rgba(255,255,255,0.08)",
                   boxShadow: "0 24px 80px rgba(0,0,0,0.6)",
@@ -506,7 +506,7 @@ export default function IndonesiaMap({ currentFrame }: { currentFrame: number })
                 <img
                   src="/indonesia-map.jpg"
                   alt="Indonesia distribution network — 8 branch locations across the archipelago"
-                  className="w-full h-full block object-fill"
+                  className="w-full h-full object-cover"
                   style={{ opacity: 0.85, mixBlendMode: "lighten" }}
                   draggable={false}
                   loading="lazy"
