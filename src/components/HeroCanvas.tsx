@@ -83,6 +83,31 @@ export default function HeroCanvas({
     }
   }, []);
 
+  // ── Apple overlay bitmap ref (loaded once on mount to cover Gemini logo) ──
+  const appleBitmapRef = useRef<ImageBitmap | null>(null);
+
+  useEffect(() => {
+    let active = true;
+    async function loadAppleOverlay() {
+      try {
+        const res = await fetch("/apple-overlay.png");
+        if (!res.ok) return;
+        const blob = await res.blob();
+        const bitmap = await createImageBitmap(blob);
+        if (active) {
+          appleBitmapRef.current = bitmap;
+          isDirtyRef.current = true;
+        }
+      } catch {
+        // Silently skip
+      }
+    }
+    loadAppleOverlay();
+    return () => {
+      active = false;
+    };
+  }, []);
+
   // ── Cover-fit draw ─────────────────────────────────────────────────────────
   const drawFrame = useCallback((frameIndex: number) => {
     const canvas = canvasRef.current;
@@ -108,6 +133,20 @@ export default function HeroCanvas({
 
     ctx.clearRect(0, 0, cw, ch);
     ctx.drawImage(bitmap, ox, oy, sw, sh);
+
+    // ── Single Canvas Overlay: Cover Gemini logo with preloaded apple asset ──
+    const appleBitmap = appleBitmapRef.current;
+    if (appleBitmap) {
+      // Size apple overlay to ~5.2% of frame width (slightly larger than Gemini logo)
+      const appleW = sw * 0.052;
+      const appleH = appleW * (appleBitmap.height / appleBitmap.width);
+
+      // Position center over Gemini watermark at ~95.2% X and ~94.8% Y of scaled frame
+      const appleX = ox + sw * 0.952 - appleW / 2;
+      const appleY = oy + sh * 0.948 - appleH / 2;
+
+      ctx.drawImage(appleBitmap, appleX, appleY, appleW, appleH);
+    }
   }, []);
 
   // ── RAF render loop ────────────────────────────────────────────────────────
