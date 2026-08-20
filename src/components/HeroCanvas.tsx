@@ -143,16 +143,19 @@ export default function HeroCanvas({
       const imgH = "height" in appleAsset ? appleAsset.height : (appleAsset as HTMLImageElement).naturalHeight;
       const aspect = (imgH && imgW) ? imgH / imgW : 1;
 
-      // Scale apple size proportionally to rendered frame width (~7.5% of frame width, min 64px)
-      const appleW = Math.max(64, sw * 0.075);
+      // Scale apple size proportionally to rendered frame width (~8.0% of frame width, min 72px)
+      const appleW = Math.max(72, sw * 0.080);
       const appleH = appleW * aspect;
 
-      // Anchor center directly to source frame coordinates of Gemini sparkle (98.5% X, 80.6% Y)
-      const appleCenterX = ox + sw * 0.985;
-      const appleCenterY = oy + sh * 0.806;
+      // Source-frame anchor coordinates of Gemini sparkle (measured: 91.5% X, 88.0% Y)
+      const watermarkNX = 0.915;
+      const watermarkNY = 0.880;
 
-      const appleX = appleCenterX - appleW / 2;
-      const appleY = appleCenterY - appleH / 2;
+      const watermarkCanvasX = ox + sw * watermarkNX;
+      const watermarkCanvasY = oy + sh * watermarkNY;
+
+      const appleX = watermarkCanvasX - appleW / 2;
+      const appleY = watermarkCanvasY - appleH / 2;
 
       ctx.save();
       ctx.globalAlpha = 1.0;
