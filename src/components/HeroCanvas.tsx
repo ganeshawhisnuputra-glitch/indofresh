@@ -83,26 +83,28 @@ export default function HeroCanvas({
     }
   }, []);
 
-  // ── Apple overlay bitmap ref (loaded once on mount to cover Gemini logo) ──
+  // ── Apple overlay asset refs (loaded once on mount to cover Gemini logo) ──
   const appleBitmapRef = useRef<ImageBitmap | null>(null);
+  const appleImgRef = useRef<HTMLImageElement | null>(null);
 
   useEffect(() => {
     let active = true;
-    async function loadAppleOverlay() {
+    const img = new Image();
+    img.src = "/apple-overlay.png";
+    img.onload = async () => {
+      if (!active) return;
+      appleImgRef.current = img;
+      isDirtyRef.current = true;
       try {
-        const res = await fetch("/apple-overlay.png");
-        if (!res.ok) return;
-        const blob = await res.blob();
-        const bitmap = await createImageBitmap(blob);
+        const bitmap = await createImageBitmap(img);
         if (active) {
           appleBitmapRef.current = bitmap;
           isDirtyRef.current = true;
         }
       } catch {
-        // Silently skip
+        // Fallback to HTMLImageElement if createImageBitmap fails
       }
-    }
-    loadAppleOverlay();
+    };
     return () => {
       active = false;
     };
@@ -135,17 +137,36 @@ export default function HeroCanvas({
     ctx.drawImage(bitmap, ox, oy, sw, sh);
 
     // ── Single Canvas Overlay: Cover Gemini logo with preloaded apple asset ──
-    const appleBitmap = appleBitmapRef.current;
-    if (appleBitmap) {
-      // Size apple overlay to ~5.2% of frame width (slightly larger than Gemini logo)
-      const appleW = sw * 0.052;
-      const appleH = appleW * (appleBitmap.height / appleBitmap.width);
+    const appleAsset = appleBitmapRef.current || appleImgRef.current;
+    if (appleAsset) {
+      // Calculate visible rendered frame bounds inside canvas viewport
+      const vRight = Math.min(cw, ox + sw);
+      const vBottom = Math.min(ch, oy + sh);
+      const vLeft = Math.max(0, ox);
+      const vTop = Math.max(0, oy);
+      const vW = vRight - vLeft;
+      const vH = vBottom - vTop;
 
-      // Position center over Gemini watermark at ~95.2% X and ~94.8% Y of scaled frame
-      const appleX = ox + sw * 0.952 - appleW / 2;
-      const appleY = oy + sh * 0.948 - appleH / 2;
+      const imgW = "width" in appleAsset ? appleAsset.width : (appleAsset as HTMLImageElement).naturalWidth;
+      const imgH = "height" in appleAsset ? appleAsset.height : (appleAsset as HTMLImageElement).naturalHeight;
+      const aspect = (imgH && imgW) ? imgH / imgW : 1;
 
-      ctx.drawImage(appleBitmap, appleX, appleY, appleW, appleH);
+      // Prominently sized to completely cover Gemini sparkle logo (~7.5% of min visible dimension, min 48px)
+      const appleW = Math.max(48, Math.min(vW, vH) * 0.075);
+      const appleH = appleW * aspect;
+
+      // Position in visible bottom-right corner of the rendered frame
+      const marginX = Math.max(12, vW * 0.02);
+      const marginY = Math.max(12, vH * 0.02);
+
+      const appleX = vRight - appleW - marginX;
+      const appleY = vBottom - appleH - marginY;
+
+      ctx.save();
+      ctx.globalAlpha = 1.0;
+      ctx.globalCompositeOperation = "source-over";
+      ctx.drawImage(appleAsset, appleX, appleY, appleW, appleH);
+      ctx.restore();
     }
   }, []);
 
