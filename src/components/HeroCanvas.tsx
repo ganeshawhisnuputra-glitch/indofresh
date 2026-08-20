@@ -127,13 +127,19 @@ export default function HeroCanvas({
     const iw = bitmap.width;
     const ih = bitmap.height;
 
-    const scale = Math.max(cw / iw, ch / ih);
+    const isMobile = isMobileRef.current;
+    const scale = isMobile
+      ? Math.min(cw / iw, ch / ih)
+      : Math.max(cw / iw, ch / ih);
+
     const sw = iw * scale;
     const sh = ih * scale;
     const ox = (cw - sw) / 2;
     const oy = (ch - sh) / 2;
 
     ctx.clearRect(0, 0, cw, ch);
+    ctx.fillStyle = "#07111f";
+    ctx.fillRect(0, 0, cw, ch);
     ctx.drawImage(bitmap, ox, oy, sw, sh);
 
     // ── Single Canvas Overlay: Cover Gemini logo anchored to source frame coords ──
