@@ -161,6 +161,22 @@ export default function HeroCanvas({
         loadFrame(f);
       }
     }
+
+    // Memory Eviction (Mobile & Low-RAM Devices): Free ImageBitmaps >45 frames away from current scroll position
+    // Keeps active RAM usage under 15 MB forever, preventing mobile tab freeze/OOM crash
+    if (isMobileRef.current) {
+      const EVICTION_WINDOW = 45;
+      for (let i = 0; i < TOTAL_FRAMES; i++) {
+        if (Math.abs(i - targetFrame) > EVICTION_WINDOW && framesRef.current[i] !== null) {
+          try {
+            framesRef.current[i]?.close();
+          } catch {
+            // Ignore if already closed
+          }
+          framesRef.current[i] = null;
+        }
+      }
+    }
   }, [loadFrame]);
 
   // ── Priority Loader (Initial gate + progressive background stream) ────────
