@@ -151,13 +151,13 @@ export default function HeroCanvas({
       const imgH = "height" in appleAsset ? appleAsset.height : (appleAsset as HTMLImageElement).naturalHeight;
       const aspect = (imgH && imgW) ? imgH / imgW : 1;
 
-      // Moderately enlarged to create safety margin around Gemini watermark (~9.8% of min visible dimension, min 62px)
-      const appleW = Math.max(62, Math.min(vW, vH) * 0.098);
+      // Enlarge 1.38x to create generous safety margin around Gemini watermark (~13.5% of min visible dimension, min 90px)
+      const appleW = Math.max(90, Math.min(vW, vH) * 0.135);
       const appleH = appleW * aspect;
 
-      // Position shifted LEFT (~4.6% of visible width, min 44px) to center directly over Gemini watermark
-      const marginX = Math.max(44, vW * 0.046);
-      const marginY = Math.max(8, vH * 0.012);
+      // Shift position LEFT (~7.8% of visible width, min 85px) and UP (~4.2% of visible height, min 45px) to align center over Gemini watermark
+      const marginX = Math.max(85, vW * 0.078);
+      const marginY = Math.max(45, vH * 0.042);
 
       const appleX = vRight - appleW - marginX;
       const appleY = vBottom - appleH - marginY;
