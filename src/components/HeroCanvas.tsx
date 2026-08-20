@@ -23,9 +23,11 @@ const TOTAL_FRAMES = 293;
 
 function getFrameUrl(index: number, isMobile: boolean): string {
   const padded = String(index).padStart(3, "0");
-  const folder = isMobile ? "frames_mobile" : "frames";
+  if (isMobile) {
+    return `/frames_mobile/frame_${padded}.webp`;
+  }
   const ext = index <= 45 ? "png" : "webp";
-  return `/${folder}/frame_${padded}.${ext}`;
+  return `/frames/frame_${padded}.${ext}`;
 }
 
 function clamp(v: number, lo: number, hi: number): number {
