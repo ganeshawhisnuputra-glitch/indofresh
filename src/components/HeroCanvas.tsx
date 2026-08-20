@@ -151,13 +151,13 @@ export default function HeroCanvas({
       const imgH = "height" in appleAsset ? appleAsset.height : (appleAsset as HTMLImageElement).naturalHeight;
       const aspect = (imgH && imgW) ? imgH / imgW : 1;
 
-      // Prominently sized to completely cover Gemini sparkle logo (~7.5% of min visible dimension, min 48px)
-      const appleW = Math.max(48, Math.min(vW, vH) * 0.075);
+      // Moderately enlarged to create safety margin around Gemini watermark (~9.8% of min visible dimension, min 62px)
+      const appleW = Math.max(62, Math.min(vW, vH) * 0.098);
       const appleH = appleW * aspect;
 
-      // Position in visible bottom-right corner of the rendered frame
-      const marginX = Math.max(12, vW * 0.02);
-      const marginY = Math.max(12, vH * 0.02);
+      // Position shifted LEFT (~4.6% of visible width, min 44px) to center directly over Gemini watermark
+      const marginX = Math.max(44, vW * 0.046);
+      const marginY = Math.max(8, vH * 0.012);
 
       const appleX = vRight - appleW - marginX;
       const appleY = vBottom - appleH - marginY;
