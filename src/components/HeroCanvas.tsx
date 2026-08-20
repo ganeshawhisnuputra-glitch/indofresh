@@ -136,31 +136,23 @@ export default function HeroCanvas({
     ctx.clearRect(0, 0, cw, ch);
     ctx.drawImage(bitmap, ox, oy, sw, sh);
 
-    // ── Single Canvas Overlay: Cover Gemini logo with preloaded apple asset ──
+    // ── Single Canvas Overlay: Cover Gemini logo anchored to source frame coords ──
     const appleAsset = appleBitmapRef.current || appleImgRef.current;
     if (appleAsset) {
-      // Calculate visible rendered frame bounds inside canvas viewport
-      const vRight = Math.min(cw, ox + sw);
-      const vBottom = Math.min(ch, oy + sh);
-      const vLeft = Math.max(0, ox);
-      const vTop = Math.max(0, oy);
-      const vW = vRight - vLeft;
-      const vH = vBottom - vTop;
-
       const imgW = "width" in appleAsset ? appleAsset.width : (appleAsset as HTMLImageElement).naturalWidth;
       const imgH = "height" in appleAsset ? appleAsset.height : (appleAsset as HTMLImageElement).naturalHeight;
       const aspect = (imgH && imgW) ? imgH / imgW : 1;
 
-      // Enlarge 1.38x to create generous safety margin around Gemini watermark (~13.5% of min visible dimension, min 90px)
-      const appleW = Math.max(90, Math.min(vW, vH) * 0.135);
+      // Scale apple size proportionally to rendered frame width (~7.5% of frame width, min 64px)
+      const appleW = Math.max(64, sw * 0.075);
       const appleH = appleW * aspect;
 
-      // Shift position LEFT (~7.8% of visible width, min 85px) and UP (~4.2% of visible height, min 45px) to align center over Gemini watermark
-      const marginX = Math.max(85, vW * 0.078);
-      const marginY = Math.max(45, vH * 0.042);
+      // Anchor center directly to source frame coordinates of Gemini sparkle (98.5% X, 80.6% Y)
+      const appleCenterX = ox + sw * 0.985;
+      const appleCenterY = oy + sh * 0.806;
 
-      const appleX = vRight - appleW - marginX;
-      const appleY = vBottom - appleH - marginY;
+      const appleX = appleCenterX - appleW / 2;
+      const appleY = appleCenterY - appleH / 2;
 
       ctx.save();
       ctx.globalAlpha = 1.0;
