@@ -147,9 +147,9 @@ export default function HeroCanvas({
       const appleW = Math.max(72, sw * 0.080);
       const appleH = appleW * aspect;
 
-      // Source-frame anchor coordinates of Gemini sparkle (measured: 91.5% X, 88.0% Y)
+      // Source-frame anchor coordinates of Gemini sparkle (measured: 91.5% X, 83.5% Y)
       const watermarkNX = 0.915;
-      const watermarkNY = 0.880;
+      const watermarkNY = 0.835;
 
       const watermarkCanvasX = ox + sw * watermarkNX;
       const watermarkCanvasY = oy + sh * watermarkNY;
